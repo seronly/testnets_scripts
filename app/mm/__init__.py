@@ -1,64 +1,39 @@
-from selenium import webdriver
 import time
-import platform
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 
-import os
-
-EXTENSION_PATH = os.getcwd() + "\\app\mm\metamaskExt.crx"
-
-EXTENSION_ID = "nkbihfbeogaeaoehlefnkodbefgpgknn"
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.webdriver import WebDriver
+from app.driver import METAMASK_EXTENSION_ID
 
 
-def get_chromedriver_path():
-    os_name = platform.system()
-    if os_name == "Windows":
-        return "\\app\webdrivers\chromedriver.exe"
-    elif os_name == "Linux":
-        return "\\app\webdrivers\chromedriver_linux"
-    elif os_name == "macOS":
-        return "\\app\webdrivers\chromedriver_macos"
-    else:
-        raise Exception(f"Unsupported operating system: {os_name}")
+def metamaskSetup(driver: WebDriver, recoveryPhrase, password):
 
+    driver.switch_to.window(driver.window_handles[1])
+    time.sleep(10)
 
-def launchSeleniumWebdriver():
-    print("path", EXTENSION_PATH)
-    chrome_options = Options()
-    chrome_service = Service(executable_path=get_chromedriver_path())
-    chrome_options.add_extension(EXTENSION_PATH)
-    global driver
-    driver = webdriver.Chrome(options=chrome_options, service=chrome_service)
-    time.sleep(5)
-    print("Extension has been loaded")
-    return driver
-
-
-def metamaskSetup(recoveryPhrase, password):
-    driver.switch_to.window(driver.window_handles[0])
-
-    driver.find_element_by_xpath('//button[text()="Get Started"]').click()
-    driver.find_element_by_xpath('//button[text()="Import wallet"]').click()
-    driver.find_element_by_xpath('//button[text()="No Thanks"]').click()
+    driver.find_element(By.XPATH, '//*[@id="onboarding__terms-checkbox"]').click()
+    # driver.find_element(By.XPATH, '//button[text()="Import wallet"]').click()
+    driver.find_element(
+        By.XPATH, '//*[@id="app-content"]/div/div[2]/div/div/div/ul/li[3]/button'
+    ).click()
+    driver.find_element(By.XPATH, '//button[text()="No Thanks"]').click()
 
     time.sleep(5)
 
-    inputs = driver.find_elements_by_xpath("//input")
+    inputs = driver.find_elements(By.XPATH, "//input")
     inputs[0].send_keys(recoveryPhrase)
     inputs[1].send_keys(password)
     inputs[2].send_keys(password)
-    driver.find_element_by_css_selector(".first-time-flow__terms").click()
-    driver.find_element_by_xpath('//button[text()="Import"]').click()
+    driver.find_element(by=By.CSS_SELECTOR, value=".first-time-flow__terms").click()
+    driver.find_element(By.XPATH, '//button[text()="Import"]').click()
 
     time.sleep(5)
 
-    driver.find_element_by_xpath('//button[text()="All Done"]').click()
+    driver.find_element(By.XPATH, '//button[text()="All Done"]').click()
     time.sleep(2)
 
     # closing the message popup after all done metamask screen
-    driver.find_element_by_xpath(
-        '//*[@id="popover-content"]/div/div/section/header/div/button'
+    driver.find_element(
+        By.XPATH, '//*[@id="popover-content"]/div/div/section/header/div/button'
     ).click()
     time.sleep(2)
     print("Wallet has been imported successfully")
