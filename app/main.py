@@ -1,6 +1,14 @@
-from web3 import Web3, EthereumTesterProvider, HTTPProvider
-from eth_account import Account
+import time
+
 from eth_account.signers.local import LocalAccount
+import hashlib
+
+from . import mm
+
+from .db import get_wallet, init_db
+from .models import Client, Wallet
+
+
 import logging
 
 logger = logging.getLogger("web3.HTTPProvider")
@@ -12,49 +20,27 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-rpc_url = "https://testnet-rpc.atleta.network"
-chain_id = 2340
-web3 = Web3(HTTPProvider(rpc_url))
-
 null_address = "0x0000000000000000000000000000000000000000"
 
 
-def create_wallet():
-    account = Account.create()
-    address = account.address
-    private_key = account.privateKey.hex()
-    print(f"Новый кошелек создан. Адрес: {address}, Приватный ключ: {private_key}")
-
-
-def get_account(primary_key: str) -> LocalAccount:
-    return web3.eth.account.from_key(primary_key)
-
-
-def send_n_sign_transaction(acc: LocalAccount, to: str):
-    transaction = {
-        "from": acc.address,
-        "to": to,
-        "value": 1_000_000_000_000_000_000,
-        "nonce": web3.eth.get_transaction_count(acc.address),
-        "gas": 200_000,
-        "maxFeePerGas": 2_000_000_000,
-        "maxPriorityFeePerGas": 1_000_000_000,
-        "chainId": 2340,
-    }
-    signed = web3.eth.account.sign_transaction(transaction, "")
-    tx_hash = web3.eth.send_raw_transaction(signed.rawTransaction)
-
-    tx = web3.eth.get_transaction(tx_hash)
-    logging.info(tx)
-    assert tx["from"] == acc.address
-
-
-def test():
-    acc = get_account("")
-    logging.info(f"Acc address: {acc.address}")
-    # logging.info(f"Is connected: {web3.is_connected()}")
-    send_n_sign_transaction(acc, null_address)
-
-
 def start():
-    test()
+    global driver
+    driver = mm.launchSeleniumWebdriver()
+    driver.get("https://app-olympia.atleta.network/faucet")
+    tw = get_wallet(id=10)
+    mm.metamaskSetup("sad adasd asdasd asdasd", "admin")
+
+    time.sleep(1000)
+    driver.quit()
+    # time_now = int(time.time())
+    # kecc = Client.web3.keccak(text=str(time_now))
+    # hex_number = hashlib.sha256(str(time_now).encode()).hexdigest()
+    # message = f"Welcome to the Atleta Olympia. Sign this message to complete login!\n{hex_number[2:18]}"
+    # tw = Client.get_wallet_from_private_key(
+    #     "0x4c2b4816bc15afb7db3ba33abc42fa2004c320a3f07564f97e8466ae83d7fc12"
+    # )
+
+    # project id ee1a8c4bc65db61f4c6062984c37bfa2
+    #  GET https://app-olympia.atleta.network/api/pub/faucet?account_id=0xDb86c42a85028Bd8B2b20B9A7065dF8441Eb1f98
+    # faucet.FundsSent
+    # https://web2-testnet-api.atleta.network/pub/auth/login
