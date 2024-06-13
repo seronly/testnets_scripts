@@ -3,8 +3,11 @@ import time
 from eth_account.signers.local import LocalAccount
 import hashlib
 
+from app.rabby import rabby_setup
+
 from . import mm
 
+from .driver import launch_selenium_webdriver
 from .db import get_wallet, init_db
 from .models import Client, Wallet
 
@@ -24,14 +27,14 @@ null_address = "0x0000000000000000000000000000000000000000"
 
 
 def start():
-    global driver
-    driver = mm.launchSeleniumWebdriver()
+    driver = launch_selenium_webdriver()
+    tw_row = get_wallet(id=10)
+    rabby_setup(driver=driver, private_key=tw_row[2], password="qwerty123123")
     driver.get("https://app-olympia.atleta.network/faucet")
-    tw = get_wallet(id=10)
-    mm.metamaskSetup("sad adasd asdasd asdasd", "admin")
 
-    time.sleep(1000)
+    time.sleep(100)
     driver.quit()
+
     # time_now = int(time.time())
     # kecc = Client.web3.keccak(text=str(time_now))
     # hex_number = hashlib.sha256(str(time_now).encode()).hexdigest()
