@@ -25,16 +25,16 @@ null_address = "0x0000000000000000000000000000000000000000"
 
 def start():
     driver = launch_selenium_webdriver()
-    tw_row = get_wallet(id=10)
+    tw_row = get_wallet(id=28)
     try:
         rabby.setup(driver=driver, private_key=tw_row[2], password="qwerty123123")
 
         atleta.claim_faucet(driver)
     except Exception as e:
         logging.error(e)
-    finally:
-        input("Press ENTER for close...")
-        driver.quit()
+
+    input("Press ENTER for close...")
+    driver.quit()
 
     # project id ee1a8c4bc65db61f4c6062984c37bfa2
     #  GET https://app-olympia.atleta.network/api/pub/faucet?account_id=0xDb86c42a85028Bd8B2b20B9A7065dF8441Eb1f98
