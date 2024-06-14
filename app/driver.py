@@ -9,11 +9,11 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 
 
 # METAMASK_EXTENSION_PATH = os.getcwd() + "\\app\mm\metamaskExt.crx"
-METAMASK_EXTENSION_PATH = os.getcwd() + "/app/mm/metamaskExt.crx"
+METAMASK_EXTENSION_PATH = os.getcwd() + "/app/wallets/mm/metamaskExt.crx"
 METAMASK_EXTENSION_ID = "nkbihfbeogaeaoehlefnkodbefgpgknn"
 
 RABBY_EXTENSION_ID = "acmacodkjbdgmoleebolmdjonilkdbch"
-RABBY_EXTENSION_PATH = os.getcwd() + "/app/rabby/rabby.crx"
+RABBY_EXTENSION_PATH = os.getcwd() + "/app/wallets/rabby/rabby.crx"
 
 
 def get_chromedriver_path():
@@ -33,6 +33,8 @@ def get_options() -> Options:
     chrome_options = Options()
     chrome_options.add_extension(RABBY_EXTENSION_PATH)
     chrome_options.add_argument("--lang=en")
+    # chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--no-sandbox")
     return chrome_options
 
 
