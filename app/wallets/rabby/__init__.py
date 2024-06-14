@@ -10,15 +10,14 @@ from app.driver import RABBY_EXTENSION_ID
 
 
 def setup(driver: WebDriver, private_key: str, password: str) -> None:
+    wait = WebDriverWait(driver, 20)
 
-    driver.switch_to.window(driver.window_handles[0])
+    # driver.switch_to.window(driver.window_handles[1])
     driver.get(f"chrome-extension://{RABBY_EXTENSION_ID}/popup.html")
 
-    time.sleep(2)
-
     # Next btn
-    # driver.find_element(By.XPATH, '//*[@id="root"]/div/section/footer/button').click()
-    driver.find_element(By.XPATH, '//span[text()="Next"]').click()
+    wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Next"]'))).click()
+    # driver.find_element(By.XPATH, '//span[text()="Next"]').click()
     time.sleep(0.02)
     # Get start btn
     driver.find_element(By.XPATH, '//*[@id="root"]/div/section/footer/a/button').click()
@@ -53,7 +52,6 @@ def connect(driver: WebDriver) -> None:
         EC.element_to_be_clickable((By.XPATH, '//span[text()="Connect"]'))
     ).click()
 
-    # driver.find_element(By.XPATH, '//span[text()="Connect"]').click()
     logging.info("Wallet has been connected!")
 
 
@@ -71,5 +69,5 @@ def sign_message(driver: WebDriver) -> None:
 
 def network_approve(driver: WebDriver) -> None:
     driver.switch_to.window(driver.window_handles[-1])
-
-    # TODO: add
+    time.sleep(2)
+    driver.find_element(By.XPATH, '//span[text()="Add"]').click()

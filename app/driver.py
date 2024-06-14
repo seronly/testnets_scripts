@@ -33,8 +33,9 @@ def get_options() -> Options:
     chrome_options = Options()
     chrome_options.add_extension(RABBY_EXTENSION_PATH)
     chrome_options.add_argument("--lang=en")
-    # chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-gpu")
     return chrome_options
 
 
