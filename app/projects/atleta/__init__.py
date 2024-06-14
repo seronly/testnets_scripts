@@ -63,3 +63,11 @@ def connect_by_request(driver: WebDriver):
     #     "https://rpc.walletconnect.com/v1/profile/reverse/0xcD9D83A5A3fD5e12659619734b380c03323ad521?projectId=ee1a8c4bc65db61f4c6062984c37bfa2"
     # )
     pass
+
+
+def create_porposal():
+    pass
+
+
+def stake(driver: WebDriver):
+    pass
