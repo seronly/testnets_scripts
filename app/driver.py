@@ -36,6 +36,8 @@ def get_options() -> Options:
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--ignore-ssl-errors=yes")
+    chrome_options.add_argument("--ignore-certificate-errors")
     return chrome_options
 
 
@@ -43,7 +45,10 @@ def launch_selenium_webdriver() -> WebDriver:
     chrome_options = get_options()
     chrome_service = Service(executable_path=get_chromedriver_path())
 
-    driver = webdriver.Chrome(options=chrome_options, service=chrome_service)
+    # driver = webdriver.Chrome(options=chrome_options, service=chrome_service)
+    driver = webdriver.Remote(
+        options=chrome_options, command_executor="http://hub:4444/wd/hub"
+    )
     time.sleep(5)
     print("Extension has been loaded")
     return driver

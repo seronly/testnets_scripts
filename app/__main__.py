@@ -40,3 +40,7 @@ def start():
     #  GET https://app-olympia.atleta.network/api/pub/faucet?account_id=0xDb86c42a85028Bd8B2b20B9A7065dF8441Eb1f98
     # faucet.FundsSent
     # https://web2-testnet-api.atleta.network/pub/auth/login
+
+
+if __name__ == "__main__":
+    start()
