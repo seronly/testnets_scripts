@@ -1,3 +1,4 @@
+import logging
 import os
 import platform
 import time
@@ -43,12 +44,14 @@ def get_options() -> Options:
 
 def launch_selenium_webdriver() -> WebDriver:
     chrome_options = get_options()
-    chrome_service = Service(executable_path=get_chromedriver_path())
+    # chrome_service = Service(executable_path=get_chromedriver_path())
 
     # driver = webdriver.Chrome(options=chrome_options, service=chrome_service)
     driver = webdriver.Remote(
-        options=chrome_options, command_executor="http://hub:4444/wd/hub"
+        options=chrome_options,
+        command_executor="http://localhost:4444/wd/hub",
     )
+    logging.info("Driver connected")
     time.sleep(5)
     print("Extension has been loaded")
     return driver

@@ -1,10 +1,8 @@
 FROM python:3.10
 
-WORKDIR /app
+WORKDIR /code
 
 RUN apt update && apt upgrade -y && apt install -y --no-install-recommends locales; rm -rf /var/lib/apt/lists/*; sed -i '/^#.* ru_RU.UTF-8 /s/^#//' /etc/locale.gen; locale-gen
-
-
 
 # Копируем requirements.txt в контейнер
 COPY requirements.txt .
@@ -13,10 +11,8 @@ RUN pip3 install --upgrade setuptools
 RUN pip3 install -r requirements.txt
 
 RUN chmod 755 .
-COPY . .
-
-# Устанавливаем переменные окружения (если необходимо)
-# ENV VARIABLE_NAME=value
+COPY /app ./app
+COPY wallets.db .
 
 # Открываем порт для приложения (если необходимо)
 # EXPOSE 8000
