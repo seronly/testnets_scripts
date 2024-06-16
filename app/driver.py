@@ -47,6 +47,7 @@ def launch_selenium_webdriver() -> WebDriver:
     # chrome_service = Service(executable_path=get_chromedriver_path())
 
     # driver = webdriver.Chrome(options=chrome_options, service=chrome_service)
+    logging.info("Connect...")
     driver = webdriver.Remote(
         options=chrome_options,
         command_executor="http://localhost:4444/wd/hub",

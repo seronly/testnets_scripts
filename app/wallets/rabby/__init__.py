@@ -13,6 +13,7 @@ def setup(driver: WebDriver, private_key: str, password: str) -> None:
     wait = WebDriverWait(driver, 20)
 
     # driver.switch_to.window(driver.window_handles[1])
+    logging.info("Open Rabby")
     driver.get(f"chrome-extension://{RABBY_EXTENSION_ID}/popup.html")
 
     # Next btn

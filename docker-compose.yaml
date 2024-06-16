@@ -9,8 +9,9 @@ services:
 
   chrome:
     image: selenium/node-chrome:latest
+    platform: linux/x86_64
     container_name: chrome
-    shm_size: 2gb
+    shm_size: 3gb
     depends_on:
       - hub
     environment:
