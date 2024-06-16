@@ -14,24 +14,19 @@ def claim_faucet(driver: WebDriver):
     driver.get("https://app-olympia.atleta.network/faucet")
 
     connect_btn = driver.find_element(By.XPATH, '//button[text()="Connect"]')
-
     if connect_btn:
         connect_wallet(driver)
 
     sleep(1)
-    driver.switch_to.window(driver.window_handles[1])
+    driver.switch_to.window(driver.window_handles[0])
+    logging.info(f"Open window: {driver.title}")
     driver.find_element(By.XPATH, '//button[text()="Send me $ATLA"]').click()
     logging.info("Tokens has been claimed!")
-    # wait.until(
-    #     EC.element_to_be_clickable((By.XPATH, '//button[text()="Send me $ATLA"]'))
-    # ).click()
 
 
 def connect_wallet(driver: WebDriver):
-    wait = WebDriverWait(driver, 20)
-    wait.until(
-        EC.element_to_be_clickable((By.XPATH, '//button[text()="Connect"]'))
-    ).click()
+    logging.info("Connect wallet...")
+    driver.find_element(By.XPATH, '//button[text()="Connect"]').click()
     sleep(2)
     # Select RabbyWallet
     driver.execute_script(
@@ -43,8 +38,9 @@ def connect_wallet(driver: WebDriver):
     rabby.connect(driver)
     sleep(1)
     rabby.sign_message(driver)
-    sleep(1)
-    driver.switch_to.window(driver.window_handles[1])
+    sleep(2)
+    driver.switch_to.window(driver.window_handles[0])
+    logging.info(f"Open window: {driver.title}")
     driver.execute_script(
         """
 document.querySelector("body > w3m-modal").shadowRoot.querySelector("wui-flex > wui-card > w3m-router").shadowRoot.querySelector("div > w3m-unsupported-chain-view").shadowRoot.querySelector("wui-flex > wui-flex:nth-child(2) > wui-list-network[name='Atleta Olympia']").shadowRoot.querySelector("button").click();

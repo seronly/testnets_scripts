@@ -25,7 +25,7 @@ null_address = "0x0000000000000000000000000000000000000000"
 
 def start():
     driver = launch_selenium_webdriver()
-    tw_row = get_wallet(id=28)
+    tw_row = get_wallet(id=31)
     try:
         rabby.setup(driver=driver, private_key=tw_row[2], password="qwerty123123")
 
